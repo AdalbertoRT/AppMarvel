@@ -21,7 +21,21 @@ export const Divider = styled.View`
   background-color: #ec1d24;
 `;
 export const HeroDescription = styled.Text`
-  padding: 20px 10px;
+  padding: 10px;
+  padding-top: 20px;
   font-size: 18px;
+  color: #fff;
+`;
+
+export const HeroCollectionsItems = styled.ScrollView``;
+
+export const HeroCollectionsTitle = styled.Text`
+  color: #fff;
+  font-size: 18px;
+  font-weight: bold;
+  text-transform: uppercase;
+`;
+export const Item = styled.Text`
+  padding: 0 10px;
   color: #fff;
 `;

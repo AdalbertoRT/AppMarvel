@@ -12,6 +12,7 @@ import {
 import {FlatList} from 'react-native';
 import md5 from 'md5';
 import {useNavigation} from '@react-navigation/native';
+import Footer from '../../components/footer';
 
 const Home = () => {
   const [heroesList, setHeroesList] = useState([]);
@@ -29,6 +30,7 @@ const Home = () => {
       `https://gateway.marvel.com/v1/public/characters?ts=${timestamp}&limit=100&orderBy=modified&apikey=${PUBLIC_KEY}&hash=${hash}`,
     );
     const json = await response.json();
+
     setHeroesList({data: json.data.results});
     setLoading(false);
   };
@@ -74,6 +76,7 @@ const Home = () => {
           numColumns={2}
         />
       )}
+      <Footer />
     </PageHome>
   );
 };

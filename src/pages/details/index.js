@@ -1,23 +1,28 @@
 import {useRoute} from '@react-navigation/native';
-import React, {useEffect} from 'react';
-import {StatusBar, Image, Dimensions, Text} from 'react-native';
+import React, {useState, useLayoutEffect} from 'react';
+import {StatusBar, StyleSheet, Dimensions, Text} from 'react-native';
 import {
   DetailsComponent,
   DetailsImage,
   HeroName,
   Divider,
   HeroDescription,
+  HeroCollectionsItems,
+  Item,
+  HeroCollectionsTitle,
 } from './styles';
+import {
+  Collapse,
+  CollapseHeader,
+  CollapseBody,
+} from 'accordion-collapse-react-native';
+import Footer from '../../components/footer';
 
 const SCREEN_WIDTH = Dimensions.get('screen').width;
 
 const Details = () => {
   const route = useRoute();
-
   const {hero} = route.params;
-  useEffect(() => {
-    console.log(SCREEN_WIDTH);
-  }, []);
 
   return (
     <DetailsComponent>
@@ -35,8 +40,78 @@ const Details = () => {
           ? hero.description
           : `${hero.name} is absent. Probably on some mission. Come back another time to get information about him.`}
       </HeroDescription>
+      <Collapse style={styles.collapse}>
+        <CollapseHeader style={styles.collapseHeader}>
+          <HeroCollectionsTitle>Comics</HeroCollectionsTitle>
+        </CollapseHeader>
+        <CollapseBody style={styles.collapseBody}>
+          <HeroCollectionsItems>
+            {hero.comics.items.map((el, index) => (
+              <Item key={index}>{'\u2B24 ' + el.name}</Item>
+            ))}
+          </HeroCollectionsItems>
+        </CollapseBody>
+      </Collapse>
+      <Collapse style={styles.collapse}>
+        <CollapseHeader style={styles.collapseHeader}>
+          <HeroCollectionsTitle>Series</HeroCollectionsTitle>
+        </CollapseHeader>
+        <CollapseBody style={styles.collapseBody}>
+          <HeroCollectionsItems>
+            {hero.series.items.map((el, index) => (
+              <Item key={index}>{'\u2B24 ' + el.name}</Item>
+            ))}
+          </HeroCollectionsItems>
+        </CollapseBody>
+      </Collapse>
+      <Collapse style={styles.collapse}>
+        <CollapseHeader style={styles.collapseHeader}>
+          <HeroCollectionsTitle>Stories</HeroCollectionsTitle>
+        </CollapseHeader>
+        <CollapseBody style={styles.collapseBody}>
+          <HeroCollectionsItems>
+            {hero.stories.items.map((el, index) => (
+              <Item key={index}>
+                {'\u2B24 ' + el.name + ' (' + el.type + ')'}
+              </Item>
+            ))}
+          </HeroCollectionsItems>
+        </CollapseBody>
+      </Collapse>
+      <Collapse style={styles.collapse}>
+        <CollapseHeader style={styles.collapseHeader}>
+          <HeroCollectionsTitle>Events</HeroCollectionsTitle>
+        </CollapseHeader>
+        <CollapseBody style={styles.collapseBody}>
+          <HeroCollectionsItems>
+            {hero.events.items.map((el, index) => (
+              <Item key={index}>{'\u2B24 ' + el.name}</Item>
+            ))}
+          </HeroCollectionsItems>
+        </CollapseBody>
+      </Collapse>
+      <Footer />
     </DetailsComponent>
   );
 };
+
+const styles = StyleSheet.create({
+  collapse: {
+    padding: 0,
+    margin: 0,
+  },
+  collapseHeader: {
+    backgroundColor: '#ec1d24',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    margin: 10,
+    paddingHorizontal: 10,
+  },
+  collapseBody: {
+    backgroundColor: '#202020',
+    marginHorizontal: 10,
+    paddingVertical: 5,
+  },
+});
 
 export default Details;
