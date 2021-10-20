@@ -1,23 +1,14 @@
 import React from 'react';
+import {NavigationContainer} from '@react-navigation/native';
 import {SafeAreaView, StyleSheet} from 'react-native';
-import Header from './src/components/header';
-import Home from './src/components/home';
+import Stack from './src/navigators/Stack';
 
 const App = () => {
   return (
-    <SafeAreaView id="App" style={styles.app}>
-      <Header />
-      <Home />
-    </SafeAreaView>
+    <NavigationContainer>
+      <Stack />
+    </NavigationContainer>
   );
 };
-const styles = StyleSheet.create({
-  app: {
-    fontFamily: 'MarvelRegular',
-    fontSize: 32,
-    backgroundColor: '#151515',
-    flex: 1,
-  },
-});
 
 export default App;

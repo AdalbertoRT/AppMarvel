@@ -1,5 +1,5 @@
 import React from 'react';
-import Logo from '../home/logo';
+import Logo from '../logo';
 import {HeaderView} from './styles';
 
 const Header = () => {
