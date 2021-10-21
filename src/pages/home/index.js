@@ -1,6 +1,11 @@
 import React, {useEffect, useLayoutEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {ActivityIndicator, StatusBar} from 'react-native';
+import {
+  ActivityIndicator,
+  StatusBar,
+  TouchableOpacity,
+  Image,
+} from 'react-native';
 import {
   PageHome,
   Loading,
@@ -11,24 +16,43 @@ import {
   HeroName,
 } from './styles';
 import {FlatList} from 'react-native';
-import md5 from 'md5';
+import search from '../../assets/icons/search.png';
 import {useNavigation} from '@react-navigation/native';
 import Footer from '../../components/footer';
 import {fetchHeroes} from '../../store/heroes';
+import ModalSearch from '../../components/modal';
 
 const Home = () => {
   const {loading, data, error} = useSelector(state => state.heroes);
-  const [heroes, setHeroes] = useState(null);
+  const [heroes, setHeroes] = useState([]);
+  const [loadingNextPage, setLoadingNextPage] = useState(false);
+  const [offset, setOffset] = useState(0);
+  const [modalVisible, setModalVisible] = useState(false);
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
   useEffect(() => {
-    dispatch(fetchHeroes());
+    setHeroes([]);
+    setOffset(0);
+    dispatch(fetchHeroes(0));
   }, []);
 
   useLayoutEffect(() => {
-    setHeroes(data);
+    if (data) {
+      setHeroes(h => [...h, ...data]);
+      setLoadingNextPage(false);
+    }
   }, [data]);
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => (
+        <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
+          <Image source={search} style={{width: 50, height: 50}} />
+        </TouchableOpacity>
+      ),
+    });
+  }, []);
 
   const handleDetail = item => {
     navigation.navigate('Details', {hero: item});
@@ -47,16 +71,22 @@ const Home = () => {
     );
   }
 
+  const onNextPage = () => {
+    setLoadingNextPage(true);
+    dispatch(fetchHeroes(offset + 20));
+    setOffset(off => off + 20);
+  };
+
   return (
     <PageHome>
       <StatusBar barStyle="light-content" backgroundColor="#ec1d24" />
-      {!heroes && (
+      {heroes.length === 0 && (
         <Loading>
           <ActivityIndicator size="large" color="#ec1d24" />
           <LoadingText className="loadingText">Carregando Heróis</LoadingText>
         </Loading>
       )}
-      {heroes && (
+      {heroes.length > 0 && (
         <FlatList
           data={heroes}
           renderItem={renderItem}
@@ -65,9 +95,20 @@ const Home = () => {
           //   <View style={{height: 1, backgroundColor: '#f7f7f7'}} />
           // )}
           numColumns={2}
+          onEndReached={onNextPage}
+          ListFooterComponent={() =>
+            loadingNextPage && (
+              <ActivityIndicator
+                size="large"
+                color="#ec1d24"
+                style={{margin: 10}}
+              />
+            )
+          }
         />
       )}
       <Footer />
+      <ModalSearch visible={modalVisible} setVisible={setModalVisible} />
     </PageHome>
   );
 };

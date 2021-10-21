@@ -23,11 +23,6 @@ export default () => (
         headerStyle: {
           backgroundColor: '#ec1d24',
         },
-        headerRight: () => (
-          <TouchableOpacity onPress={() => alert('clicou!')}>
-            <Image source={search} style={{width: 50, height: 50}} />
-          </TouchableOpacity>
-        ),
       }}
     />
     <Stack.Screen

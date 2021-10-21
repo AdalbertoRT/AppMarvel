@@ -7,6 +7,7 @@ const PRIVATE_KEY = '7a7d719f066df6ced2c20281ca90d4547c70e6ad';
 const timestamp = Number(new Date());
 const hash = md5(timestamp + PRIVATE_KEY + PUBLIC_KEY);
 
+//Reducer (state, actions)
 const slice = createSlice({
   name: 'heroes',
   initialState: {loading: false, data: null, error: null},
@@ -29,11 +30,12 @@ const slice = createSlice({
 
 export const {fetchStarted, fetchSuccess, fetchError} = slice.actions;
 
-export const fetchHeroes = () => async dispatch => {
+//Redux Thunk to Fetch Heroes API
+export const fetchHeroes = offset => async dispatch => {
   try {
     dispatch(fetchStarted);
     const response = await axios.get(
-      `https://gateway.marvel.com/v1/public/characters?ts=${timestamp}&limit=100&orderBy=modified&apikey=${PUBLIC_KEY}&hash=${hash}`,
+      `https://gateway.marvel.com/v1/public/characters?ts=${timestamp}&orderBy=name&limit=20&offset=${offset}&apikey=${PUBLIC_KEY}&hash=${hash}`,
     );
     return dispatch(fetchSuccess(response.data.data.results));
   } catch (error) {
