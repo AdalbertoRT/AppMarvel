@@ -1,4 +1,5 @@
-import React, {useLayoutEffect, useState} from 'react';
+import React, {useEffect, useLayoutEffect, useState} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import {ActivityIndicator, StatusBar} from 'react-native';
 import {
   PageHome,
@@ -13,31 +14,21 @@ import {FlatList} from 'react-native';
 import md5 from 'md5';
 import {useNavigation} from '@react-navigation/native';
 import Footer from '../../components/footer';
+import {fetchHeroes} from '../../store/heroes';
 
 const Home = () => {
-  const [heroesList, setHeroesList] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const {loading, data, error} = useSelector(state => state.heroes);
+  const [heroes, setHeroes] = useState(null);
+  const dispatch = useDispatch();
   const navigation = useNavigation();
 
-  const PUBLIC_KEY = 'd2c23ab2d9aa451626cb51e3cffb8a24';
-  const PRIVATE_KEY = '7a7d719f066df6ced2c20281ca90d4547c70e6ad';
-  const timestamp = Number(new Date());
-  const hash = md5(timestamp + PRIVATE_KEY + PUBLIC_KEY);
-
-  const heroes = async () => {
-    setLoading(true);
-    const response = await fetch(
-      `https://gateway.marvel.com/v1/public/characters?ts=${timestamp}&limit=100&orderBy=modified&apikey=${PUBLIC_KEY}&hash=${hash}`,
-    );
-    const json = await response.json();
-
-    setHeroesList({data: json.data.results});
-    setLoading(false);
-  };
+  useEffect(() => {
+    dispatch(fetchHeroes());
+  }, []);
 
   useLayoutEffect(() => {
-    heroes();
-  }, []);
+    setHeroes(data);
+  }, [data]);
 
   const handleDetail = item => {
     navigation.navigate('Details', {hero: item});
@@ -59,15 +50,15 @@ const Home = () => {
   return (
     <PageHome>
       <StatusBar barStyle="light-content" backgroundColor="#ec1d24" />
-      {loading && (
+      {!heroes && (
         <Loading>
           <ActivityIndicator size="large" color="#ec1d24" />
           <LoadingText className="loadingText">Carregando Heróis</LoadingText>
         </Loading>
       )}
-      {!loading && (
+      {heroes && (
         <FlatList
-          data={heroesList.data}
+          data={heroes}
           renderItem={renderItem}
           keyExtractor={item => item.id}
           // ItemSeparatorComponent={() => (

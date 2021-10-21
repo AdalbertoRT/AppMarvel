@@ -1,7 +1,9 @@
 import * as React from 'react';
+import {Image, TouchableOpacity} from 'react-native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Home from '../pages/home';
 import Details from '../pages/details';
+import search from '../assets/icons/search.png';
 
 const Stack = createNativeStackNavigator();
 
@@ -21,6 +23,11 @@ export default () => (
         headerStyle: {
           backgroundColor: '#ec1d24',
         },
+        headerRight: () => (
+          <TouchableOpacity onPress={() => alert('clicou!')}>
+            <Image source={search} style={{width: 50, height: 50}} />
+          </TouchableOpacity>
+        ),
       }}
     />
     <Stack.Screen
