@@ -5,7 +5,12 @@ import {
 } from '@reduxjs/toolkit';
 import heroes from './heroes';
 
-const middleware = [...getDefaultMiddleware()];
+const middleware = [
+  ...getDefaultMiddleware({
+    immutableCheck: {warnAfter: 128},
+    serializableCheck: {warnAfter: 128},
+  }),
+];
 
 const reducer = combineReducers({
   heroes,

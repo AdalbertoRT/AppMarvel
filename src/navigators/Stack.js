@@ -1,19 +1,24 @@
 import * as React from 'react';
-import {Image, TouchableOpacity} from 'react-native';
+import {View, Text} from 'react-native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Home from '../pages/home';
 import Details from '../pages/details';
-import search from '../assets/icons/search.png';
+import {useNavigation} from '@react-navigation/native';
 
 const Stack = createNativeStackNavigator();
+
+const handleHome = () => {
+  const navigation = useNavigation();
+  navigation.navigate('Home');
+};
 
 export default () => (
   <Stack.Navigator initialRouteName="Home">
     <Stack.Screen
       name="Home"
-      component={Home}
+      component={Details}
       options={{
-        title: 'MARVEL',
+        title: 'MARVEL Heroes',
         headerTitleAlign: 'center',
         headerTitleStyle: {
           fontFamily: 'MarvelRegular',

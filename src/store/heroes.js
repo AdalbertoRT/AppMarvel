@@ -43,4 +43,17 @@ export const fetchHeroes = offset => async dispatch => {
   }
 };
 
+//Redux Thunk to Fetch a Hero API
+export const fetchHero = name => async dispatch => {
+  try {
+    dispatch(fetchStarted);
+    const response = await axios.get(
+      `https://gateway.marvel.com/v1/public/characters?ts=${timestamp}&nameStartsWith=${name}&orderBy=name&limit=20&apikey=${PUBLIC_KEY}&hash=${hash}`,
+    );
+    return dispatch(fetchSuccess(response.data.data.results));
+  } catch (error) {
+    return dispatch(fetchError(error.message));
+  }
+};
+
 export default slice.reducer;

@@ -1,59 +1,77 @@
 import React from 'react';
-import {View, Text, StyleSheet, Linking} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Linking,
+  TouchableOpacity,
+  Image,
+} from 'react-native';
+import search from '../../assets/icons/search.png';
+import home from '../../assets/icons/home.png';
+import avengers from '../../assets/icons/avengers.png';
+import {
+  FooterComponent,
+  FooterControl,
+  Search,
+  Home,
+  Avengers,
+  Copyright,
+} from './styles';
 
 const Footer = () => {
   return (
-    <View style={styles.footer}>
-      <View style={styles.footerTop}>
+    <FooterComponent>
+      <FooterControl>
+        <Search underlayColor="#ec2d24" activeOpacity={0.3} onPress={() => {}}>
+          <Image source={search} style={{width: 30, height: 30}} />
+        </Search>
+        <Home underlayColor="#ec2d24" activeOpacity={0.6} onPress={() => {}}>
+          <Image source={home} style={{width: 50, height: 50}} />
+        </Home>
+        <Avengers
+          underlayColor="#ec2d24"
+          activeOpacity={0.6}
+          onPress={() => {}}>
+          <Image source={avengers} style={{width: 30, height: 30}} />
+        </Avengers>
+      </FooterControl>
+      <Copyright>
         <Text style={styles.provided}>
-          Data provided by MARVEL. © 2021 MARVEL
+          Data provided by MARVEL.COM |{' '}
+          <Text
+            style={styles.link}
+            onPress={() => Linking.openURL('http://marvel.com')}>
+            © 2021 MARVEL
+          </Text>
         </Text>
         <Text
-          style={styles.link}
-          onPress={() => Linking.openURL('http://marvel.com')}>
-          Site: MARVEL.COM
-        </Text>
-      </View>
-      <View style={styles.footerBottom}>
-        <Text style={styles.developer}>
+          style={styles.developer}
+          onPress={() => Linking.openURL('http://adalberto.site')}>
           Developed by: Adalberto R. Teixeira
         </Text>
-      </View>
-    </View>
+      </Copyright>
+    </FooterComponent>
   );
 };
 
 const styles = StyleSheet.create({
-  footer: {
-    height: 'auto',
-    width: '100%',
-    marginTop: 5,
-
-    backgroundColor: '#ec1d24',
-  },
-  footerTop: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-  },
   provided: {
     fontFamily: 'MarvelRegular',
-    fontSize: 14,
+    fontSize: 10,
     color: '#FFF',
     marginVertical: 5,
   },
   link: {
     fontFamily: 'MarvelRegular',
-    fontSize: 14,
+    fontSize: 10,
     color: '#FFF',
     marginVertical: 5,
   },
-  footerBottom: {
-    alignItems: 'center',
-  },
   developer: {
-    color: '#FFF',
-    fontSize: 12,
+    color: '#000',
+    fontSize: 10,
+    fontWeight: 'bold',
   },
 });
 export default Footer;

@@ -1,19 +1,29 @@
-import React from 'react';
+import React, {useEffect, useLayoutEffect} from 'react';
 import {
   Modal,
   View,
   Text,
   TextInput,
   Button,
-  Alert,
+  Image,
   StyleSheet,
+  TouchableOpacity,
+  TouchableHighlight,
 } from 'react-native';
 import {Formik} from 'formik';
+import close from '../../assets/icons/close.png';
+import search from '../../assets/icons/search.png';
+import {useDispatch, useSelector} from 'react-redux';
+import {fetchHero} from '../../store/heroes';
 
-const ModalSearch = ({visible, setVisible}) => {
-  const handleSubmit = () => {
-    console.log('submeteu');
-    setVisible(!visible);
+const ModalSearch = ({visible, setVisible, setHeroes, setFilter}) => {
+  const dispatch = useDispatch();
+  // const {data} = useSelector(state => state.heroes);
+
+  const handleSearch = name => {
+    dispatch(fetchHero(name));
+    setHeroes([]);
+    setFilter(true);
   };
 
   return (
@@ -25,19 +35,48 @@ const ModalSearch = ({visible, setVisible}) => {
         setVisible(!visible);
       }}>
       <View style={styles.centeredView}>
+        <TouchableOpacity
+          style={styles.close}
+          onPress={() => setVisible(!visible)}>
+          <Image source={close} style={{width: 50, height: 50}} />
+        </TouchableOpacity>
         <View style={styles.modalView}>
+          <Text style={styles.title}>Look for the hero</Text>
           <Formik
             initialValues={{name: ''}}
-            onSubmit={values => console.log(values)}>
-            {({handleChange, handleBlur, values}) => (
+            validate={values => {
+              const errors = {};
+              if (values.name === '') {
+                errors.name = 'Enter a valid name!';
+              }
+              return errors;
+            }}
+            onSubmit={values => handleSearch(values.name)}>
+            {({handleChange, handleBlur, handleSubmit, values, errors}) => (
               <View style={styles.form}>
                 <TextInput
                   style={styles.textInput}
+                  placeholder="Enter the name"
                   onChangeText={handleChange('name')}
                   onBlur={handleBlur('name')}
                   value={values.name}
                 />
-                <Button onPress={handleSubmit} title="Buscar" />
+                {errors.name && <Text style={styles.error}>{errors.name}</Text>}
+
+                <View style={styles.buttons}>
+                  <TouchableHighlight
+                    style={styles.buttonSend}
+                    onPress={() => {
+                      handleSubmit();
+                    }}>
+                    <Image source={search} style={{width: 50, height: 50}} />
+                  </TouchableHighlight>
+                  <TouchableHighlight
+                    style={styles.buttonCancel}
+                    onPress={() => setVisible(!visible)}>
+                    <Text style={styles.btnText}>Cancel</Text>
+                  </TouchableHighlight>
+                </View>
               </View>
             )}
           </Formik>
@@ -52,14 +91,15 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 22,
+    backgroundColor: 'rgba(0,0,0,0.7)',
+    padding: 20,
   },
   modalView: {
-    margin: 20,
-    width: '90%',
-    backgroundColor: '#202020',
+    borderColor: '#ec1d24',
+    borderWidth: 5,
+    backgroundColor: '#151515',
     borderRadius: 20,
-    padding: 35,
+    padding: 30,
     alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: {
@@ -70,36 +110,61 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
+  title: {
+    fontFamily: 'MarvelRegular',
+    color: '#FFF',
+    fontSize: 20,
+    fontWeight: 'bold',
+    textTransform: 'uppercase',
+    marginBottom: 10,
+  },
   form: {
     width: '100%',
     height: 'auto',
   },
   textInput: {
+    fontFamily: 'MarvelRegular',
     borderWidth: 1,
     borderColor: '#aaa',
-    marginVertical: 10,
+    marginTop: 10,
     backgroundColor: 'white',
     borderRadius: 5,
     fontSize: 20,
   },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
+  buttons: {width: '100%', flexDirection: 'row', marginTop: 10},
+  buttonSend: {
+    flex: 1,
+    borderRadius: 5,
+    elevation: 1,
+    marginRight: 5,
+    backgroundColor: '#ec1d24',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  buttonOpen: {
-    backgroundColor: '#F194FF',
+  buttonCancel: {
+    flex: 1,
+    borderRadius: 5,
+    elevation: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginLeft: 5,
+    borderColor: '#ec1d24',
+    borderWidth: 5,
   },
-  buttonClose: {
-    backgroundColor: '#2196F3',
-  },
-  textStyle: {
-    color: 'white',
+  btnText: {
+    color: '#ec1d24',
+    fontSize: 20,
     fontWeight: 'bold',
-    textAlign: 'center',
+    textTransform: 'uppercase',
   },
-  modalText: {
-    marginBottom: 15,
+  close: {
+    alignSelf: 'flex-end',
+    position: 'absolute',
+    top: 20,
+    right: 20,
+  },
+  error: {
+    color: '#ec1d24',
     textAlign: 'center',
   },
 });

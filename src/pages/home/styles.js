@@ -6,6 +6,7 @@ export const PageHome = styled.SafeAreaView`
 `;
 export const Loading = styled.View`
   flex: 1;
+  background-color: #151515;
   align-items: center;
   justify-content: center;
 `;
