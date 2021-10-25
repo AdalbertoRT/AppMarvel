@@ -11,8 +11,8 @@ import {
 import {duplicatedRemove} from '../../utils/duplicatedRemove';
 
 const EditedHeroes = () => {
-  const [editedHeroes, setEditedHeroes] = useState(null);
-  const [sortHeroes, setSortHeroes] = useState(null);
+  const [editedHeroes, setEditedHeroes] = useState([]);
+  const [sortHeroes, setSortHeroes] = useState([]);
 
   const getHeroes = async () => {
     const response = await getData();
@@ -24,8 +24,8 @@ const EditedHeroes = () => {
   }, []);
 
   useEffect(() => {
-    if (editedHeroes) setSortHeroes(duplicatedRemove(editedHeroes));
-  }, [setEditedHeroes]);
+    setSortHeroes(duplicatedRemove(editedHeroes));
+  }, [editedHeroes]);
 
   const renderItem = ({item}) => {
     return <RenderItem item={item} height={100} />;

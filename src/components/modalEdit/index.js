@@ -16,7 +16,7 @@ import {getData, storeData} from '../../utils/asyncStorage';
 import {useNavigation} from '@react-navigation/native';
 
 const ModalEdit = ({visible, setVisible, hero}) => {
-  const [editedHero, setEditedHero] = useState(null);
+  const [editedHero, setEditedHero] = useState([]);
   const navigation = useNavigation();
   const date = new Date();
 
@@ -30,21 +30,21 @@ const ModalEdit = ({visible, setVisible, hero}) => {
   }, []);
 
   useEffect(() => {
-    if (editedHero) {
-      storeData(editedHero);
-      console.log('Heroi editado: ', editedHero);
-    }
-  }, [setEditedHero]);
+    // if (editedHero) {
+    storeData(editedHero);
+    console.log('Heroi editado: ', editedHero);
+    // }
+  }, [editedHero]);
 
   const handleStore = (name, description) => {
     const newHero = {...hero};
     newHero.name = name;
     newHero.description = description;
     newHero.modified = date.toISOString();
-    if (editedHero) {
-      setEditedHero(eh => [...eh, newHero]);
-      navigation.navigate('EditedHeroes');
-    }
+    // if (editedHero) {
+    setEditedHero(eh => [...eh, newHero]);
+    navigation.navigate('EditedHeroes');
+    // }
   };
 
   return (

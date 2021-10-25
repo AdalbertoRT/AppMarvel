@@ -23,19 +23,11 @@ const ModalSearch = ({visible, setVisible, filterPage = false}) => {
 
   const handleSearch = name => {
     dispatch(fetchHero(name));
-    // setHeroes([]);
-    // setFilter(true);
-    // navigation.navigate('Home');
     navigation.dispatch(
       navigation.replace('Filter', {
         name: name,
       }),
     );
-    // navigation.push('Filter', {name});
-    // );
-    //navigation.navigate('Filter', {name});
-
-    // setVisible(!visible);
   };
 
   return (
