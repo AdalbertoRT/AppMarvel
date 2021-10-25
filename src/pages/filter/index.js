@@ -21,7 +21,6 @@ const FilterPage = () => {
   const {name} = route.params;
 
   useEffect(() => {
-    // setHeroes([]);
     dispatch(fetchHero(name));
   }, []);
 

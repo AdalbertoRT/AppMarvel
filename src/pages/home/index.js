@@ -22,7 +22,7 @@ const Home = () => {
   const navigation = useNavigation();
 
   useEffect(() => {
-    setHeroes([]);
+    // setHeroes([]);
     setOffset(0);
     dispatch(fetchHeroes(0));
   }, []);

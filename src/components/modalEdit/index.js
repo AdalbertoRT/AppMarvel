@@ -35,7 +35,6 @@ const ModalEdit = ({visible, setVisible, hero}) => {
 
   useEffect(() => {
     if (editedHero) storeData(editedHero);
-    console.log('Heroi editado: ', editedHero);
   }, [editedHero]);
 
   const handleStore = (name, description) => {
@@ -43,10 +42,8 @@ const ModalEdit = ({visible, setVisible, hero}) => {
     newHero.name = name;
     newHero.description = description;
     newHero.modified = date.toISOString();
-    if (editedHero) {
-      setEditedHero(eh => [...eh, newHero]);
-      navigation.navigate('EditedHeroes');
-    }
+    setEditedHero(eh => [...eh, newHero]);
+    navigation.navigate('EditedHeroes');
   };
 
   return (
