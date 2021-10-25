@@ -7,7 +7,7 @@ export const storeData = async obj => {
     const json = JSON.stringify(newObj);
     await AsyncStorage.setItem('@myHeroes', json);
   } catch (e) {
-    alert(e.message);
+    console.log(e.message);
   }
 };
 
@@ -16,6 +16,6 @@ export const getData = async () => {
     const json = await AsyncStorage.getItem('@myHeroes');
     return json !== null ? JSON.parse(json) : null;
   } catch (e) {
-    alert(e.message);
+    console.log(e.message);
   }
 };

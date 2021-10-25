@@ -22,29 +22,29 @@ const ModalEdit = ({visible, setVisible, hero}) => {
 
   const getEditedHeroes = async () => {
     const response = await getData();
-    // if (response === null) setEditedHero([]);
-    // else setEditedHero(response);
     setEditedHero(response);
   };
 
   useEffect(() => {
-    // clearAll();
-    // setEditedHero([]);
     getEditedHeroes();
   }, []);
 
   useEffect(() => {
-    if (editedHero) storeData(editedHero);
-  }, [editedHero]);
+    if (editedHero) {
+      storeData(editedHero);
+      console.log('Heroi editado: ', editedHero);
+    }
+  }, [setEditedHero]);
 
   const handleStore = (name, description) => {
     const newHero = {...hero};
     newHero.name = name;
     newHero.description = description;
     newHero.modified = date.toISOString();
-    if (editedHero) setEditedHero(eh => [...eh, newHero]);
-    else setEditedHero(newHero);
-    navigation.navigate('EditedHeroes');
+    if (editedHero) {
+      setEditedHero(eh => [...eh, newHero]);
+      navigation.navigate('EditedHeroes');
+    }
   };
 
   return (

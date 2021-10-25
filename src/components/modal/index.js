@@ -14,12 +14,15 @@ import {Formik} from 'formik';
 import close from '../../assets/icons/close.png';
 import search from '../../assets/icons/search.png';
 import {useNavigation} from '@react-navigation/native';
+import {useDispatch} from 'react-redux';
+import {fetchHero} from '../../store/heroes';
 
 const ModalSearch = ({visible, setVisible, filterPage = false}) => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   const handleSearch = name => {
-    // dispatch(fetchHero(name));
+    dispatch(fetchHero(name));
     // setHeroes([]);
     // setFilter(true);
     // navigation.navigate('Home');
@@ -28,9 +31,11 @@ const ModalSearch = ({visible, setVisible, filterPage = false}) => {
         name: name,
       }),
     );
+    // navigation.push('Filter', {name});
+    // );
     //navigation.navigate('Filter', {name});
 
-    setVisible(!visible);
+    // setVisible(!visible);
   };
 
   return (

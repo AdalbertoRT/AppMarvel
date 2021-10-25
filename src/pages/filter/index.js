@@ -20,13 +20,10 @@ const FilterPage = () => {
   const route = useRoute();
   const {name} = route.params;
 
-  useEffect(() => {
-    dispatch(fetchHero(name));
-  }, []);
-
-  useEffect(() => {
-    setHeroes([]);
-  }, [name]);
+  // useEffect(() => {
+  // setHeroes([]);
+  // dispatch(fetchHero(name));
+  // }, []);
 
   useLayoutEffect(() => {
     if (data) {
@@ -82,7 +79,7 @@ const FilterPage = () => {
           </Text>
         </View>
       )}
-      {heroes.length === 0 && loading ? (
+      {loading ? (
         <LoadingComponent />
       ) : (
         <HeroesList

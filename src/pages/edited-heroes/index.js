@@ -25,8 +25,7 @@ const EditedHeroes = () => {
 
   useEffect(() => {
     if (editedHeroes) setSortHeroes(duplicatedRemove(editedHeroes));
-    console.log(editedHeroes);
-  }, [editedHeroes]);
+  }, [setEditedHeroes]);
 
   const renderItem = ({item}) => {
     return <RenderItem item={item} height={100} />;
