@@ -32,7 +32,7 @@ const ModalEdit = ({visible, setVisible, hero}) => {
   useEffect(() => {
     // if (editedHero) {
     storeData(editedHero);
-    console.log('Heroi editado: ', editedHero);
+    // console.log('Heroi editado: ', editedHero);
     // }
   }, [editedHero]);
 
