@@ -3,6 +3,9 @@ import styled from 'styled-components/native';
 export const FooterComponent = styled.View`
   background-color: #ec1d24;
   justify-content: space-around;
+  margin-top: 50px;
+  position: absolute;
+  bottom: 0;
 `;
 
 export const FooterControl = styled.View`
@@ -11,7 +14,7 @@ export const FooterControl = styled.View`
   flex-direction: row;
 `;
 
-export const Search = styled.TouchableHighlight`
+export const SmallButton = styled.TouchableHighlight`
   background-color: #ec1d24;
   border-radius: 25px;
   border: 5px solid #151515;
@@ -23,7 +26,7 @@ export const Search = styled.TouchableHighlight`
   justify-content: center;
 `;
 
-export const Home = styled.TouchableHighlight`
+export const LargeButton = styled.TouchableHighlight`
   background-color: #ec1d24;
   border-radius: 35px;
   border: 5px solid #151515;
@@ -31,18 +34,6 @@ export const Home = styled.TouchableHighlight`
   width: 70px;
   height: 70px;
   margin-top: -35px;
-  align-items: center;
-  justify-content: center;
-`;
-
-export const Avengers = styled.TouchableHighlight`
-  background-color: #ec1d24;
-  border-radius: 25px;
-  border: 5px solid #151515;
-  padding: 10px;
-  width: 50px;
-  height: 50px;
-  margin-top: -25px;
   align-items: center;
   justify-content: center;
 `;

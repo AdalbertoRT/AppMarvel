@@ -10,31 +10,67 @@ import {
 import search from '../../assets/icons/search.png';
 import home from '../../assets/icons/home.png';
 import avengers from '../../assets/icons/avengers.png';
+import edit from '../../assets/icons/edit.png';
 import {
   FooterComponent,
   FooterControl,
-  Search,
-  Home,
-  Avengers,
+  SmallButton,
+  LargeButton,
   Copyright,
 } from './styles';
+import {useNavigation} from '@react-navigation/native';
+import {useDispatch} from 'react-redux';
+import {fetchHeroes} from '../../store/heroes';
 
-const Footer = () => {
+const Footer = ({
+  setModal,
+  iconsVisibles = true,
+  details = false,
+  setModalEdit,
+}) => {
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
+
+  const handleSearch = () => {
+    setModal(true);
+  };
+
+  const handleHome = () => {
+    navigation.navigate('Home');
+  };
+
   return (
     <FooterComponent>
       <FooterControl>
-        <Search underlayColor="#ec2d24" activeOpacity={0.3} onPress={() => {}}>
-          <Image source={search} style={{width: 30, height: 30}} />
-        </Search>
-        <Home underlayColor="#ec2d24" activeOpacity={0.6} onPress={() => {}}>
-          <Image source={home} style={{width: 50, height: 50}} />
-        </Home>
-        <Avengers
+        {iconsVisibles &&
+          (!details ? (
+            <SmallButton activeOpacity={0.3} onPress={handleSearch}>
+              <Image source={search} style={{width: 30, height: 30}} />
+            </SmallButton>
+          ) : (
+            <SmallButton
+              underlayColor="#ec2d24"
+              onPress={() => setModalEdit(true)}
+              activeOpacity={0.3}>
+              <Image source={edit} style={{width: 30, height: 30}} />
+            </SmallButton>
+          ))}
+        <LargeButton
           underlayColor="#ec2d24"
           activeOpacity={0.6}
-          onPress={() => {}}>
-          <Image source={avengers} style={{width: 30, height: 30}} />
-        </Avengers>
+          onPress={handleHome}>
+          <Image source={home} style={{width: 50, height: 50}} />
+        </LargeButton>
+        {iconsVisibles && (
+          <SmallButton
+            underlayColor="#ec2d24"
+            activeOpacity={0.6}
+            onPress={() => {
+              navigation.navigate('EditedHeroes');
+            }}>
+            <Image source={avengers} style={{width: 30, height: 30}} />
+          </SmallButton>
+        )}
       </FooterControl>
       <Copyright>
         <Text style={styles.provided}>

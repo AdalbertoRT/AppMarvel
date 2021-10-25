@@ -1,4 +1,4 @@
-import React, {useEffect, useLayoutEffect} from 'react';
+import React, {useEffect, useState, useLayoutEffect} from 'react';
 import {
   Modal,
   View,
@@ -12,25 +12,41 @@ import {
 } from 'react-native';
 import {Formik} from 'formik';
 import close from '../../assets/icons/close.png';
-import search from '../../assets/icons/search.png';
+import {getData, storeData} from '../../utils/asyncStorage';
 import {useNavigation} from '@react-navigation/native';
 
-const ModalSearch = ({visible, setVisible, filterPage = false}) => {
+const ModalEdit = ({visible, setVisible, hero}) => {
+  const [editedHero, setEditedHero] = useState([]);
   const navigation = useNavigation();
+  const date = new Date();
 
-  const handleSearch = name => {
-    // dispatch(fetchHero(name));
-    // setHeroes([]);
-    // setFilter(true);
-    // navigation.navigate('Home');
-    navigation.dispatch(
-      navigation.replace('Filter', {
-        name: name,
-      }),
-    );
-    //navigation.navigate('Filter', {name});
+  const getEditedHeroes = async () => {
+    const response = await getData();
+    // if (response === null) setEditedHero([]);
+    // else setEditedHero(response);
+    setEditedHero(response);
+  };
 
-    setVisible(!visible);
+  useEffect(() => {
+    // clearAll();
+    // setEditedHero([]);
+    getEditedHeroes();
+  }, []);
+
+  useEffect(() => {
+    if (editedHero) storeData(editedHero);
+    console.log('Heroi editado: ', editedHero);
+  }, [editedHero]);
+
+  const handleStore = (name, description) => {
+    const newHero = {...hero};
+    newHero.name = name;
+    newHero.description = description;
+    newHero.modified = date.toISOString();
+    if (editedHero) {
+      setEditedHero(eh => [...eh, newHero]);
+      navigation.navigate('EditedHeroes');
+    }
   };
 
   return (
@@ -42,23 +58,21 @@ const ModalSearch = ({visible, setVisible, filterPage = false}) => {
         setVisible(!visible);
       }}>
       <View style={styles.centeredView}>
-        <TouchableOpacity
-          style={styles.close}
-          onPress={() => setVisible(!visible)}>
-          <Image source={close} style={{width: 50, height: 50}} />
-        </TouchableOpacity>
         <View style={styles.modalView}>
-          <Text style={styles.title}>Find the hero</Text>
+          <Text style={styles.title}>Edit the Hero</Text>
           <Formik
-            initialValues={{name: ''}}
+            initialValues={{name: hero.name, description: hero.description}}
             validate={values => {
               const errors = {};
               if (values.name === '') {
                 errors.name = 'Enter a valid name!';
               }
+              if (values.description === '') {
+                errors.description = 'Enter a valid description!';
+              }
               return errors;
             }}
-            onSubmit={values => handleSearch(values.name)}>
+            onSubmit={values => handleStore(values.name, values.description)}>
             {({handleChange, handleBlur, handleSubmit, values, errors}) => (
               <View style={styles.form}>
                 <TextInput
@@ -69,14 +83,26 @@ const ModalSearch = ({visible, setVisible, filterPage = false}) => {
                   value={values.name}
                 />
                 {errors.name && <Text style={styles.error}>{errors.name}</Text>}
+                <TextInput
+                  multiline={true}
+                  numberOfLines={16}
+                  style={styles.textArea}
+                  placeholder="Enter the description"
+                  onChangeText={handleChange('description')}
+                  onBlur={handleBlur('description')}
+                  value={values.description}
+                />
+                {errors.description && (
+                  <Text style={styles.error}>{errors.description}</Text>
+                )}
 
                 <View style={styles.buttons}>
                   <TouchableHighlight
                     style={styles.buttonSend}
                     onPress={() => {
-                      handleSubmit();
+                      handleSubmit(values.name, values.description);
                     }}>
-                    <Image source={search} style={{width: 50, height: 50}} />
+                    <Text style={styles.btnSaveText}>Save</Text>
                   </TouchableHighlight>
                   <TouchableHighlight
                     style={styles.buttonCancel}
@@ -89,6 +115,11 @@ const ModalSearch = ({visible, setVisible, filterPage = false}) => {
           </Formik>
         </View>
       </View>
+      <TouchableOpacity
+        style={styles.close}
+        onPress={() => setVisible(!visible)}>
+        <Image source={close} style={{width: 50, height: 50}} />
+      </TouchableOpacity>
     </Modal>
   );
 };
@@ -99,7 +130,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'rgba(0,0,0,0.7)',
-    padding: 20,
+    padding: 15,
   },
   modalView: {
     borderColor: '#ec1d24',
@@ -137,7 +168,16 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     fontSize: 20,
   },
-  buttons: {width: '100%', flexDirection: 'row', marginTop: 10},
+  textArea: {
+    borderWidth: 1,
+    borderColor: '#aaa',
+    marginTop: 10,
+    backgroundColor: 'white',
+    borderRadius: 5,
+    fontSize: 20,
+    textAlignVertical: 'top',
+  },
+  buttons: {width: '100%', flexDirection: 'row', marginTop: 20},
   buttonSend: {
     flex: 1,
     borderRadius: 5,
@@ -157,6 +197,12 @@ const styles = StyleSheet.create({
     borderColor: '#ec1d24',
     borderWidth: 5,
   },
+  btnSaveText: {
+    color: '#FFF',
+    fontSize: 20,
+    fontWeight: 'bold',
+    textTransform: 'uppercase',
+  },
   btnText: {
     color: '#ec1d24',
     fontSize: 20,
@@ -166,7 +212,7 @@ const styles = StyleSheet.create({
   close: {
     alignSelf: 'flex-end',
     position: 'absolute',
-    top: 20,
+    top: 18,
     right: 20,
   },
   error: {
@@ -175,4 +221,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ModalSearch;
+export default ModalEdit;

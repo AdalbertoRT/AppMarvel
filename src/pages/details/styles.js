@@ -1,9 +1,14 @@
 import styled from 'styled-components/native';
 
-export const DetailsComponent = styled.ScrollView`
+export const PageDetails = styled.SafeAreaView`
   background-color: #151515;
   flex: 1;
+  height: auto;
 `;
+export const DetailsComponent = styled.ScrollView`
+  margin-bottom: 65px;
+`;
+
 export const DetailsImage = styled.Image`
   width: ${props => props.width + 'px'};
   height: ${props => props.height + 'px'};
@@ -40,6 +45,9 @@ export const HeroDescription = styled.Text`
   color: #fff;
 `;
 
+export const HeroCollections = styled.View`
+  margin-bottom: 40px;
+`;
 export const HeroCollectionsItems = styled.ScrollView``;
 
 export const HeroCollectionsTitle = styled.Text`

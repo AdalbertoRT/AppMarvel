@@ -4,6 +4,7 @@ import {
   getDefaultMiddleware,
 } from '@reduxjs/toolkit';
 import heroes from './heroes';
+import editHeroes from './heroes';
 
 const middleware = [
   ...getDefaultMiddleware({
@@ -14,6 +15,7 @@ const middleware = [
 
 const reducer = combineReducers({
   heroes,
+  editHeroes,
 });
 
 const store = configureStore({reducer, middleware});

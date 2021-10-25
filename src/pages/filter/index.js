@@ -1,37 +1,33 @@
 import React, {useEffect, useLayoutEffect, useState} from 'react';
+import {useRoute} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
-import {ActivityIndicator, StatusBar, Text, View, Image} from 'react-native';
-import {PageHome, HeroesList, OrderButton} from './styles';
+import {ActivityIndicator, StatusBar, Text, View} from 'react-native';
+import {PageFilter, HeroesList} from './styles';
 import {useNavigation} from '@react-navigation/native';
 import Footer from '../../components/footer';
 import LoadingComponent from '../../components/loading';
-import {fetchHeroes} from '../../store/heroes';
+import {fetchHero, fetchHeroes} from '../../store/heroes';
 import ModalSearch from '../../components/modal';
 import RenderItem from '../../components/renderItem';
-import sort from '../../assets/icons/sort.png';
 
-const Home = () => {
+const FilterPage = () => {
   const {loading, data, error} = useSelector(state => state.heroes);
   const [heroes, setHeroes] = useState([]);
-  const [ordering, setOrdering] = useState('Name');
   const [filter, setFilter] = useState(false);
-  const [loadingNextPage, setLoadingNextPage] = useState(false);
-  const [offset, setOffset] = useState(0);
   const [modalVisible, setModalVisible] = useState(false);
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const route = useRoute();
+  const {name} = route.params;
 
   useEffect(() => {
-    setHeroes([]);
-    setOffset(0);
-    dispatch(fetchHeroes(0));
+    // setHeroes([]);
+    dispatch(fetchHero(name));
   }, []);
 
   useLayoutEffect(() => {
     if (data) {
-      setHeroes(h => [...h, ...data]);
-      setLoadingNextPage(false);
-      setOffset(off => off + 50);
+      setHeroes(data);
     }
   }, [data]);
 
@@ -54,12 +50,6 @@ const Home = () => {
           </Text>
         </View>
       ),
-      headerRight: () => (
-        <OrderButton title={ordering}>
-          <Image source={sort} style={{width: 30, height: 30}} />
-          <Text style={{color: '#FFF'}}>{ordering}</Text>
-        </OrderButton>
-      ),
     });
   }, []);
 
@@ -67,14 +57,8 @@ const Home = () => {
     return <RenderItem item={item} />;
   };
 
-  const onNextPage = () => {
-    setLoadingNextPage(true);
-    dispatch(fetchHeroes(offset + 50));
-    setOffset(off => off + 50);
-  };
-
   return (
-    <PageHome>
+    <PageFilter>
       <StatusBar barStyle="light-content" backgroundColor="#ec1d24" />
       {error && (
         <View
@@ -109,18 +93,18 @@ const Home = () => {
           //   <View style={{height: 1, backgroundColor: '#f7f7f7'}} />
           // )}
           numColumns={2}
-          onEndReached={onNextPage}
+          // onEndReached={onNextPage}
           // onEndReachedThreshold={0.5}
-          ListFooterComponent={() =>
-            !filter &&
-            loadingNextPage && (
-              <ActivityIndicator
-                size="large"
-                color="#ec1d24"
-                style={{margin: 10}}
-              />
-            )
-          }
+          // ListFooterComponent={() =>
+          //   !filter &&
+          //   loadingNextPage && (
+          //     <ActivityIndicator
+          //       size="large"
+          //       color="#ec1d24"
+          //       style={{margin: 10}}
+          //     />
+          //   )
+          // }
         />
       )}
 
@@ -129,10 +113,10 @@ const Home = () => {
         visible={modalVisible}
         setVisible={setModalVisible}
         setHeroes={setHeroes}
-        setFilter={setFilter}
+        filterPage={true}
       />
-    </PageHome>
+    </PageFilter>
   );
 };
 
-export default Home;
+export default FilterPage;
