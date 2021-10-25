@@ -9,11 +9,11 @@ import {fetchHeroes} from '../../store/heroes';
 import ModalSearch from '../../components/modal';
 import RenderItem from '../../components/renderItem';
 import sort from '../../assets/icons/sort.png';
+import {isFulfilled} from '@reduxjs/toolkit';
 
 const Home = () => {
   const {loading, data, error} = useSelector(state => state.heroes);
   const [heroes, setHeroes] = useState([]);
-  const [ordering, setOrdering] = useState('Name');
   const [filter, setFilter] = useState(false);
   const [loadingNextPage, setLoadingNextPage] = useState(false);
   const [offset, setOffset] = useState(0);
@@ -54,12 +54,6 @@ const Home = () => {
           </Text>
         </View>
       ),
-      headerRight: () => (
-        <OrderButton title={ordering}>
-          <Image source={sort} style={{width: 30, height: 30}} />
-          <Text style={{color: '#FFF'}}>{ordering}</Text>
-        </OrderButton>
-      ),
     });
   }, []);
 
@@ -68,9 +62,11 @@ const Home = () => {
   };
 
   const onNextPage = () => {
-    setLoadingNextPage(true);
-    dispatch(fetchHeroes(offset + 50));
-    setOffset(off => off + 50);
+    if (!filter) {
+      setLoadingNextPage(true);
+      dispatch(fetchHeroes(offset + 50));
+      setOffset(off => off + 50);
+    }
   };
 
   return (
