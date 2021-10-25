@@ -24,6 +24,10 @@ const FilterPage = () => {
     dispatch(fetchHero(name));
   }, []);
 
+  useEffect(() => {
+    setHeroes([]);
+  }, [name]);
+
   useLayoutEffect(() => {
     if (data) {
       setHeroes(data);

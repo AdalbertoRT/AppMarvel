@@ -16,7 +16,7 @@ import {getData, storeData} from '../../utils/asyncStorage';
 import {useNavigation} from '@react-navigation/native';
 
 const ModalEdit = ({visible, setVisible, hero}) => {
-  const [editedHero, setEditedHero] = useState([]);
+  const [editedHero, setEditedHero] = useState(null);
   const navigation = useNavigation();
   const date = new Date();
 
@@ -42,7 +42,8 @@ const ModalEdit = ({visible, setVisible, hero}) => {
     newHero.name = name;
     newHero.description = description;
     newHero.modified = date.toISOString();
-    setEditedHero(eh => [...eh, newHero]);
+    if (editedHero) setEditedHero(eh => [...eh, newHero]);
+    else setEditedHero(newHero);
     navigation.navigate('EditedHeroes');
   };
 
