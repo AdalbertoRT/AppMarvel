@@ -6,6 +6,7 @@ export const FooterComponent = styled.View`
   margin-top: 50px;
   position: absolute;
   bottom: 0;
+  width: 100%;
 `;
 
 export const FooterControl = styled.View`
@@ -39,10 +40,8 @@ export const LargeButton = styled.TouchableHighlight`
 `;
 
 export const Copyright = styled.View`
-  height: auto;
   border-top-width: 3px;
   border-top-color: #151515;
-  width: 100%;
   margin-top: 5px;
   flex-direction: row;
   align-items: center;

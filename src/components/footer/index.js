@@ -94,19 +94,19 @@ const Footer = ({
 const styles = StyleSheet.create({
   provided: {
     fontFamily: 'MarvelRegular',
-    fontSize: 10,
+    fontSize: 7,
     color: '#FFF',
     marginVertical: 5,
   },
   link: {
     fontFamily: 'MarvelRegular',
-    fontSize: 10,
+    fontSize: 7,
     color: '#FFF',
     marginVertical: 5,
   },
   developer: {
     color: '#000',
-    fontSize: 10,
+    fontSize: 7,
     fontWeight: 'bold',
   },
 });

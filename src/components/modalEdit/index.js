@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'rgba(0,0,0,0.7)',
-    padding: 15,
+    padding: 10,
   },
   modalView: {
     borderColor: '#ec1d24',
@@ -157,14 +157,15 @@ const styles = StyleSheet.create({
   form: {
     width: '100%',
     height: 'auto',
+    maxHeight: '90%',
   },
   textInput: {
     borderWidth: 1,
     borderColor: '#aaa',
-    marginTop: 10,
     backgroundColor: 'white',
     borderRadius: 5,
-    fontSize: 20,
+    fontSize: 18,
+    paddingVertical: 0,
   },
   textArea: {
     borderWidth: 1,
@@ -172,8 +173,9 @@ const styles = StyleSheet.create({
     marginTop: 10,
     backgroundColor: 'white',
     borderRadius: 5,
-    fontSize: 20,
+    fontSize: 16,
     textAlignVertical: 'top',
+    maxHeight: '70%',
   },
   buttons: {width: '100%', flexDirection: 'row', marginTop: 20},
   buttonSend: {
